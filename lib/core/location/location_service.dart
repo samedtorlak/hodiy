@@ -45,20 +45,14 @@ class LocationService {
         ),
       ).timeout(const Duration(seconds: 15));
 
-      return LocationGranted(
-        lat: position.latitude,
-        lon: position.longitude,
-      );
+      return LocationGranted(lat: position.latitude, lon: position.longitude);
     } on TimeoutException {
       final position = await Geolocator.getLastKnownPosition();
       if (position == null) {
         return LocationTimeout();
       }
 
-      return LocationGranted(
-        lat: position.latitude,
-        lon: position.longitude,
-      );
+      return LocationGranted(lat: position.latitude, lon: position.longitude);
     }
   }
 }

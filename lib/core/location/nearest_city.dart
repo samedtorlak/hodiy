@@ -26,7 +26,8 @@ double _haversineKm(double lat1, double lon1, double lat2, double lon2) {
 
   final sinHalfLatDelta = math.sin(latDelta / 2);
   final sinHalfLonDelta = math.sin(lonDelta / 2);
-  final a = sinHalfLatDelta * sinHalfLatDelta +
+  final a =
+      sinHalfLatDelta * sinHalfLatDelta +
       math.cos(lat1Radians) *
           math.cos(lat2Radians) *
           sinHalfLonDelta *
