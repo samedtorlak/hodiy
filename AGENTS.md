@@ -2,8 +2,9 @@
 
 ## Execution environment
 
-- This Oracle server is `aarch64`. Flutter, Dart, Java, and the Android SDK are not installed and cannot be installed here because the required toolchain is x64-only.
-- Write code in this repository, but never claim to run formatting, analysis, tests, or builds locally. Run all of those checks in GitHub Actions on `ubuntu-latest` (x64).
+- This Oracle server is `aarch64`. Flutter, the Android SDK, and full `flutter analyze`/`flutter test`/`flutter build` are not available here (that toolchain needs x64 or a full Flutter engine build we don't have) — those run in GitHub Actions on `ubuntu-latest` (x64).
+- The plain **Dart SDK** (no Flutter) IS installed locally at `/home/ubuntu/.local/dart-sdk/bin` (on PATH). Run `dart format lib test` before every commit that touches `.dart` files — it works standalone (ignore the "Package resolution error... flutter_lints" warning, that's expected without the full Flutter SDK, formatting still works). This catches the single most common CI failure (formatting) without waiting for a CI round trip. Do not attempt `dart analyze` or `dart test` locally — those need the Flutter SDK's own packages (`package:flutter`, `package:flutter_test`) which aren't resolvable with just the Dart SDK; those still require CI.
+- Write code in this repository, but never claim to run analysis, tests, or builds locally — only `dart format` is locally verified. Run everything else in GitHub Actions.
 - For every change: implement it, commit it, push it, wait for CI to finish with `gh run watch`, and inspect the result. Do not pretend that local verification is available.
 - Keep every task small and independent. Try at most three CI iterations for one task. If CI is still red after the third iteration, stop and report the state instead of retrying forever.
 - A completion report needs a receipt: state the commit SHA and the URL of the green CI run. Saying only that the work is done is insufficient.
