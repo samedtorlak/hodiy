@@ -27,6 +27,17 @@
   "navQibla": "Qibla",
   "navTasbih": "Tasbih",
   "navSettings": "Settings",
+  "qiblaTitle": "Qibla",
+  "qiblaCalibrateHint": "Move your phone in a figure-8 to calibrate the compass",
+  "qiblaNoSensorMessage": "Your device has no compass sensor. Showing the fixed direction instead.",
+  "qiblaBearingLabel": "Qibla bearing: {degrees}°",
+  "@qiblaBearingLabel": {
+    "placeholders": {
+      "degrees": {
+        "type": "int"
+      }
+    }
+  },
   "nextPrayerLabel": "Next prayer",
   "todayLabel": "Today",
   "tomorrowLabel": "Tomorrow",
