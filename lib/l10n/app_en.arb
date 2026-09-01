@@ -64,5 +64,11 @@
   "saveButton": "Save",
   "confirmButton": "Confirm",
   "retryButton": "Retry",
-  "errorGenericMessage": "Something went wrong. Please try again."
+  "errorGenericMessage": "Something went wrong. Please try again.",
+  "tasbihTitle": "Tasbih",
+  "tasbihTargetLabel": "Target",
+  "tasbihResetButton": "Reset",
+  "tasbihResetConfirmMessage": "Reset the counter to zero?",
+  "tasbihCustomTargetLabel": "Custom",
+  "tasbihLapCompleteMessage": "Lap complete"
 }

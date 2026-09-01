@@ -11,4 +11,7 @@ abstract final class PrefsKeys {
   static const imsakOffsetMinutes = 'imsak_offset_minutes';
   static const notificationsEnabledPrefix = 'notif_enabled_';
   static const soundType = 'sound_type';
+  static const tasbihCount = 'tasbih_count';
+  static const tasbihTarget = 'tasbih_target';
+  static const tasbihLabel = 'tasbih_label';
 }
