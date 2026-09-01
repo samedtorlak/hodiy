@@ -8,6 +8,7 @@
 - For every change: implement it, commit it, push it, wait for CI to finish with `gh run watch`, and inspect the result. Do not pretend that local verification is available.
 - Keep every task small and independent. Try at most three CI iterations for one task. If CI is still red after the third iteration, stop and report the state instead of retrying forever.
 - A completion report needs a receipt: state the commit SHA and the URL of the green CI run. Saying only that the work is done is insufficient.
+- **NEVER reference `secrets.*` inside a job- or step-level `if:` condition for a secret that has not been created in this repo's Settings → Secrets yet.** This was bisected and confirmed (2026-09-01): it makes the ENTIRE workflow fail to start (0 jobs, "failure", wrong registered name) on every push, not just evaluate to false. Referencing the same secret inside an `env:` block is safe. If a step needs to run conditionally on a secret's presence, put the secret only in `env:` and do the emptiness check inside the shell script (`if [ -z "$SECRET_VAR" ]; then ... exit 0; fi`), never in YAML `if:`. See `.github/workflows/publish.yml`'s "Configure release signing" step for the working pattern.
 
 ## Product invariants
 
