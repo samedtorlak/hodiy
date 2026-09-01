@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hodiy/core/localization/fallback_delegate.dart';
 import 'package:hodiy/core/localization/generated/app_localizations.dart';
+import 'package:hodiy/core/localization/locale_resolver.dart';
 import 'package:hodiy/core/navigation/app_shell.dart';
 import 'package:hodiy/features/notifications/notification_service.dart';
 import 'package:hodiy/features/notifications/scheduler.dart';
@@ -38,8 +40,15 @@ class HodiyApp extends StatelessWidget {
         builder: (context) => MaterialApp(
           title: 'Hodiy',
           locale: context.watch<SettingsController>().locale,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            fallbackMaterialLocalizationsDelegate,
+            fallbackCupertinoLocalizationsDelegate,
+            fallbackWidgetsLocalizationsDelegate,
+          ],
           supportedLocales: AppLocalizations.supportedLocales,
+          localeResolutionCallback: (deviceLocale, supportedLocales) =>
+              resolveAppLocale(deviceLocale, supportedLocales.toList()),
           theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.teal),
           home: const AppShell(),
         ),

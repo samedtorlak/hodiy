@@ -16,7 +16,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  static const _supportedLocales = [Locale('en')];
+  static const _supportedLocales = [
+    Locale('en'),
+    Locale('ru'),
+    Locale('uz'),
+    Locale('kk'),
+    Locale('ky'),
+    Locale('tg'),
+  ];
   static const _imsakOffsets = [0, 5, 10];
   static const _hijriOffsets = [-2, -1, 0, 1, 2];
   static const _soundTypes = ['default', 'adhan'];
@@ -88,6 +95,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     };
   }
 
+  String _languageName(Locale locale) {
+    return switch (locale.languageCode) {
+      'en' => 'English',
+      'ru' => 'Русский',
+      'uz' => 'Oʻzbekcha',
+      'kk' => 'Қазақша',
+      'ky' => 'Кыргызча',
+      'tg' => 'Тоҷикӣ',
+      _ => locale.languageCode,
+    };
+  }
+
   Widget _dropdown<T>({
     required T value,
     required List<T> values,
@@ -126,7 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: _dropdown<Locale>(
               value: settings.locale,
               values: _supportedLocales,
-              label: (locale) => locale.languageCode,
+              label: _languageName,
               onChanged: (locale) {
                 if (locale != null) {
                   settings.setLocale(locale);

@@ -73,4 +73,45 @@ void main() {
 
     expect(find.text('Settings'), findsOneWidget);
   });
+
+  testWidgets('offers all supported languages using native names', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final settings = SettingsController();
+    await settings.load();
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<SettingsController>.value(value: settings),
+          Provider<NotificationServiceBase>(
+            create: (_) => FakeNotificationService(),
+          ),
+        ],
+        child: const MaterialApp(
+          locale: Locale('en'),
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: SettingsScreen(),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('English'), findsOneWidget);
+    await tester.tap(find.byType(DropdownButton<Locale>));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Русский'), findsOneWidget);
+    expect(find.text('Oʻzbekcha'), findsOneWidget);
+    expect(find.text('Қазақша'), findsOneWidget);
+    expect(find.text('Кыргызча'), findsOneWidget);
+    expect(find.text('Тоҷикӣ'), findsOneWidget);
+  });
 }
