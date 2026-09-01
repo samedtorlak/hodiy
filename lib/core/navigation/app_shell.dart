@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hodiy/core/ads/banner_slot.dart';
 import 'package:hodiy/core/localization/generated/app_localizations.dart';
 import 'package:hodiy/features/notifications/notification_service.dart';
 import 'package:hodiy/features/notifications/scheduler.dart';
@@ -104,9 +105,16 @@ class _AppShellState extends State<AppShell> {
           ),
         ],
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: const [HomeScreen(), QiblaScreen(), TasbihScreen()],
+      body: Column(
+        children: [
+          Expanded(
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: const [HomeScreen(), QiblaScreen(), TasbihScreen()],
+            ),
+          ),
+          const BannerSlot(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
