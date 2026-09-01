@@ -13,7 +13,41 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-      - run: echo "check"
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        shell: bash
+        run: |
+          format_targets=()
+          [[ -d lib ]] && format_targets+=(lib)
+          [[ -d test ]] && format_targets+=(test)
+          if (( ${#format_targets[@]} == 0 )); then
+            echo "No lib or test directories to format."
+          else
+            dart format --output=none --set-exit-if-changed "${format_targets[@]}"
+          fi
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Test
+        run: flutter test
 
   release:
     needs: check
