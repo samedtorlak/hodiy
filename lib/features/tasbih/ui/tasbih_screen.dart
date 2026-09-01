@@ -59,7 +59,7 @@ class _TasbihScreenState extends State<TasbihScreen> {
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(labelText: l10n.tasbihTargetLabel),
           onChanged: (value) => customTarget = value,
-          onSubmitted: (value) {
+          onFieldSubmitted: (value) {
             final target = int.tryParse(value);
             if (target != null && target > 0) {
               Navigator.of(dialogContext).pop(target);
