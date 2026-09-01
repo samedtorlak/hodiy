@@ -1,12 +1,119 @@
-name: Publish Test
+name: Release
 
+# Triggers on every push to main (not just tags) because a tags-only push
+# filter was observed to make GitHub report a spurious "failure" status on
+# every ordinary branch push (2026-09-01). The actual release jobs are
+# guarded by `if: startsWith(github.ref, 'refs/tags/')` so non-tag pushes
+# report as "skipped" instead of "failed".
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
-  hello:
+  check:
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-      - run: echo "hello"
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        shell: bash
+        run: |
+          format_targets=()
+          [[ -d lib ]] && format_targets+=(lib)
+          [[ -d test ]] && format_targets+=(test)
+          if (( ${#format_targets[@]} == 0 )); then
+            echo "No lib or test directories to format."
+          else
+            dart format --output=none --set-exit-if-changed "${format_targets[@]}"
+          fi
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Test
+        run: flutter test
+
+  release:
+    needs: check
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Configure release signing
+        if: ${{ secrets.KEYSTORE_BASE64 != '' && secrets.KEYSTORE_PASSWORD != '' && secrets.KEY_ALIAS != '' && secrets.KEY_PASSWORD != '' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        shell: bash
+        run: |
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+          {
+            printf 'storePassword=%s\n' "$KEYSTORE_PASSWORD"
+            printf 'keyPassword=%s\n' "$KEY_PASSWORD"
+            printf 'keyAlias=%s\n' "$KEY_ALIAS"
+            printf 'storeFile=upload-keystore.jks\n'
+          } > android/key.properties
+
+      - name: Build release app bundle
+        shell: bash
+        run: |
+          flutter build appbundle --release \
+            --build-number="${{ github.run_number }}" \
+            --build-name="${GITHUB_REF_NAME#v}" \
+            --dart-define=ADS_ENABLED=false
+
+      - name: Build release APK
+        shell: bash
+        run: |
+          flutter build apk --release \
+            --build-number="${{ github.run_number }}" \
+            --build-name="${GITHUB_REF_NAME#v}" \
+            --dart-define=ADS_ENABLED=false
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/app/outputs/bundle/release/app-release.aab
+            build/app/outputs/flutter-apk/app-release.apk
