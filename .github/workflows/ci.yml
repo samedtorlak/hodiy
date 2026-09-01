@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # This intentionally fails until the scaffold PR adds pubspec.yaml.
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        shell: bash
+        run: |
+          format_targets=()
+          [[ -d lib ]] && format_targets+=(lib)
+          [[ -d test ]] && format_targets+=(test)
+          if (( ${#format_targets[@]} == 0 )); then
+            echo "No lib or test directories to format."
+          else
+            dart format --output=none --set-exit-if-changed "${format_targets[@]}"
+          fi
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Test
+        run: flutter test
+
+  apk:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Build debug APK
+        run: flutter build apk --debug --dart-define=ADS_ENABLED=true
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-debug.apk

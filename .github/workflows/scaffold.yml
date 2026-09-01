@@ -1,0 +1,47 @@
+name: Scaffold Flutter project
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Create Android project
+        run: flutter create --org com.msela --project-name hodiy --platforms android .
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Commit scaffold
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c scaffold
+          git add --all
+          git commit -m "Scaffold Flutter project"
+          git push --set-upstream origin scaffold
+
+      - name: Open scaffold pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr create --fill --head scaffold --base main
