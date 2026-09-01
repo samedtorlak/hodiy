@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hodiy/core/localization/generated/app_localizations.dart';
+import 'package:hodiy/core/navigation/app_shell.dart';
+import 'package:hodiy/features/notifications/notification_service.dart';
+import 'package:hodiy/features/notifications/scheduler.dart';
 import 'package:hodiy/features/prayer_times/state/prayer_controller.dart';
-import 'package:hodiy/features/prayer_times/ui/home_screen.dart';
 import 'package:hodiy/features/settings/state/settings_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -24,14 +26,23 @@ class HodiyApp extends StatelessWidget {
             return controller;
           },
         ),
+        Provider<NotificationService>(create: (_) => NotificationService()),
+        Provider<NotificationServiceBase>(
+          create: (context) => context.read<NotificationService>(),
+        ),
+        Provider<Scheduler>(
+          create: (context) => Scheduler(context.read<NotificationService>()),
+        ),
       ],
-      child: MaterialApp(
-        title: 'Hodiy',
-        locale: settings.locale,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.teal),
-        home: const HomeScreen(),
+      child: Builder(
+        builder: (context) => MaterialApp(
+          title: 'Hodiy',
+          locale: context.watch<SettingsController>().locale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.teal),
+          home: const AppShell(),
+        ),
       ),
     );
   }

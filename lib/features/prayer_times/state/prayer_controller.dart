@@ -22,6 +22,12 @@ class PrayerController extends ChangeNotifier {
   MapEntry<String, DateTime>? get next => _next;
   Duration? get countdown => _countdown;
 
+  CalculationParameters buildParams() {
+    return _settings.calcMethod.getParameters()
+      ..madhab = _settings.madhab
+      ..highLatitudeRule = _settings.highLatitudeRule;
+  }
+
   void recompute() {
     final lat = _settings.lat;
     final lon = _settings.lon;
@@ -34,9 +40,7 @@ class PrayerController extends ChangeNotifier {
       return;
     }
 
-    final params = _settings.calcMethod.getParameters()
-      ..madhab = _settings.madhab
-      ..highLatitudeRule = _settings.highLatitudeRule;
+    final params = buildParams();
     final now = DateTime.now().toUtc();
     final todayDate = DateTime.utc(now.year, now.month, now.day);
     final tomorrowDate = todayDate.add(const Duration(days: 1));

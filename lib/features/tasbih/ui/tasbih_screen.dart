@@ -121,75 +121,71 @@ class _TasbihScreenState extends State<TasbihScreen> {
           _scheduleLapFeedback(l10n.tasbihLapCompleteMessage);
         }
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(l10n.tasbihTitle),
-            actions: [
-              IconButton(
-                onPressed: () => _confirmReset(l10n),
-                tooltip: l10n.tasbihResetButton,
-                icon: const Icon(Icons.refresh),
-              ),
-            ],
-          ),
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      for (final target in const [33, 99, 100])
-                        ChoiceChip(
-                          label: Text(target.toString()),
-                          selected: _controller.target == target,
-                          onSelected: (_) => _controller.setTarget(target),
-                        ),
-                      ChoiceChip(
-                        label: Text(l10n.tasbihCustomTargetLabel),
-                        selected: !const [
-                          33,
-                          99,
-                          100,
-                        ].contains(_controller.target),
-                        onSelected: (_) => _selectCustomTarget(l10n),
-                      ),
-                    ],
-                  ),
+        return SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () => _confirmReset(l10n),
+                  tooltip: l10n.tasbihResetButton,
+                  icon: const Icon(Icons.refresh),
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    key: const ValueKey('tasbihTapArea'),
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      unawaited(HapticFeedback.selectionClick());
-                      _controller.increment();
-                    },
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            _controller.count.toString(),
-                            style: Theme.of(context).textTheme.displayLarge,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '${l10n.tasbihTargetLabel}: '
-                            '${_controller.target}',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final target in const [33, 99, 100])
+                      ChoiceChip(
+                        label: Text(target.toString()),
+                        selected: _controller.target == target,
+                        onSelected: (_) => _controller.setTarget(target),
                       ),
+                    ChoiceChip(
+                      label: Text(l10n.tasbihCustomTargetLabel),
+                      selected: !const [
+                        33,
+                        99,
+                        100,
+                      ].contains(_controller.target),
+                      onSelected: (_) => _selectCustomTarget(l10n),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  key: const ValueKey('tasbihTapArea'),
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    unawaited(HapticFeedback.selectionClick());
+                    _controller.increment();
+                  },
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _controller.count.toString(),
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${l10n.tasbihTargetLabel}: '
+                          '${_controller.target}',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

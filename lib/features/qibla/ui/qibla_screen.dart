@@ -22,14 +22,37 @@ class _QiblaScreenState extends State<QiblaScreen> {
   double? _lastHeading;
   bool _sensorAvailable = true;
   bool _needsCalibration = false;
+  double? _trackedLat;
+  double? _trackedLon;
 
   @override
   void initState() {
     super.initState();
     final settings = context.read<SettingsController>();
-    final lat = settings.lat;
-    final lon = settings.lon;
+    _applyLocation(settings.lat, settings.lon);
+  }
+
+  // Re-runs sensor setup whenever the tracked lat/lon actually changes
+  // (e.g. the user picked a different city while this tab was already
+  // built once via IndexedStack). Safe to call every build - it no-ops
+  // unless the coordinates changed.
+  void _applyLocation(double? lat, double? lon) {
+    if (lat == _trackedLat && lon == _trackedLon) {
+      return;
+    }
+    _trackedLat = lat;
+    _trackedLon = lon;
+
+    _compassSubscription?.cancel();
+    _compassSubscription = null;
+    _sensorTimeout?.cancel();
+    _sensorTimeout = null;
+    _lastHeading = null;
+    _sensorAvailable = true;
+    _needsCalibration = false;
+
     if (lat == null || lon == null) {
+      _qiblaAngle = null;
       return;
     }
 
@@ -85,18 +108,17 @@ class _QiblaScreenState extends State<QiblaScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final settings = context.watch<SettingsController>();
+    _applyLocation(settings.lat, settings.lon);
     final qiblaAngle = _qiblaAngle;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.qiblaTitle)),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: qiblaAngle == null
-                ? Text(l10n.locationUnknownLabel, textAlign: TextAlign.center)
-                : _buildCompassContent(l10n, qiblaAngle),
-          ),
+    return SafeArea(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: qiblaAngle == null
+              ? Text(l10n.locationUnknownLabel, textAlign: TextAlign.center)
+              : _buildCompassContent(l10n, qiblaAngle),
         ),
       ),
     );

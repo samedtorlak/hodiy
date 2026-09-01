@@ -137,112 +137,105 @@ class _HomeScreenState extends State<HomeScreen> {
         final day = _showingTomorrow
             ? prayerController.tomorrow
             : prayerController.today;
-        return Scaffold(
-          appBar: AppBar(title: Text(l10n.navPrayerTimes)),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Text(
+                          l10n.hijriDateLabel,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${hijriDate.hDay} '
+                          '${_hijriMonth(l10n, hijriDate.hMonth)} '
+                          '${hijriDate.hYear}',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.location_on_outlined),
+                    title: Text(
+                      city == null
+                          ? l10n.locationUnknownLabel
+                          : _cityName(context, city),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: _openCityPicker,
+                  ),
+                ),
+                if (prayerController.next != null)
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
+                          Text(l10n.nextPrayerLabel),
+                          const SizedBox(height: 4),
                           Text(
-                            l10n.hijriDateLabel,
-                            style: Theme.of(context).textTheme.labelLarge,
+                            _prayerName(l10n, prayerController.next!.key),
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${hijriDate.hDay} '
-                            '${_hijriMonth(l10n, hijriDate.hMonth)} '
-                            '${hijriDate.hYear}',
-                            style: Theme.of(context).textTheme.titleLarge,
+                            _formatCountdown(prayerController.countdown),
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.location_on_outlined),
-                      title: Text(
-                        city == null
-                            ? l10n.locationUnknownLabel
-                            : _cityName(context, city),
-                      ),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: _openCityPicker,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: _showingTomorrow
+                          ? () => setState(() => _showingTomorrow = false)
+                          : null,
+                      icon: const Icon(Icons.chevron_left),
                     ),
-                  ),
-                  if (prayerController.next != null)
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Text(l10n.nextPrayerLabel),
-                            const SizedBox(height: 4),
-                            Text(
-                              _prayerName(l10n, prayerController.next!.key),
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _formatCountdown(prayerController.countdown),
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: _showingTomorrow
-                            ? () => setState(() => _showingTomorrow = false)
-                            : null,
-                        icon: const Icon(Icons.chevron_left),
-                      ),
-                      Text(
-                        _showingTomorrow ? l10n.tomorrowLabel : l10n.todayLabel,
-                      ),
-                      IconButton(
-                        onPressed:
-                            !_showingTomorrow &&
-                                prayerController.tomorrow != null
-                            ? () => setState(() => _showingTomorrow = true)
-                            : null,
-                        icon: const Icon(Icons.chevron_right),
-                      ),
-                    ],
-                  ),
-                  if (day == null) ...[
-                    const SizedBox(height: 24),
                     Text(
-                      l10n.locationUnknownLabel,
-                      textAlign: TextAlign.center,
+                      _showingTomorrow ? l10n.tomorrowLabel : l10n.todayLabel,
                     ),
-                    const SizedBox(height: 12),
-                    FilledButton(
-                      onPressed: _openCityPicker,
-                      child: Text(l10n.cityPickerTitle),
+                    IconButton(
+                      onPressed:
+                          !_showingTomorrow && prayerController.tomorrow != null
+                          ? () => setState(() => _showingTomorrow = true)
+                          : null,
+                      icon: const Icon(Icons.chevron_right),
                     ),
-                  ] else
-                    for (final prayer in _prayerTimes(day))
-                      Card(
-                        child: ListTile(
-                          title: Text(_prayerName(l10n, prayer.key)),
-                          trailing: Text(
-                            DateFormat('HH:mm').format(prayer.value.toLocal()),
-                          ),
+                  ],
+                ),
+                if (day == null) ...[
+                  const SizedBox(height: 24),
+                  Text(l10n.locationUnknownLabel, textAlign: TextAlign.center),
+                  const SizedBox(height: 12),
+                  FilledButton(
+                    onPressed: _openCityPicker,
+                    child: Text(l10n.cityPickerTitle),
+                  ),
+                ] else
+                  for (final prayer in _prayerTimes(day))
+                    Card(
+                      child: ListTile(
+                        title: Text(_prayerName(l10n, prayer.key)),
+                        trailing: Text(
+                          DateFormat('HH:mm').format(prayer.value.toLocal()),
                         ),
                       ),
-                ],
-              ),
+                    ),
+              ],
             ),
           ),
         );
