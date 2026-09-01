@@ -1,15 +1,20 @@
 name: Release
 
+# GitHub reports a spurious "failure" (0 jobs) on every ordinary branch push
+# when `on.push` only has a `tags:` filter (known platform quirk, confirmed
+# 2026-09-01 - a brand-new workflow file with a tags-only filter showed the
+# same failure). Fix: trigger on every push, but guard the actual jobs with
+# `if: startsWith(github.ref, 'refs/tags/')` so non-tag pushes report as
+# "skipped" instead of "failed".
 on:
   push:
-    tags:
-      - 'v*'
 
 permissions:
   contents: write
 
 jobs:
   check:
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -50,6 +55,7 @@ jobs:
 
   release:
     needs: check
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
