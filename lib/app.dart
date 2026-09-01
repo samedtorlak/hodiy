@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hodiy/core/localization/generated/app_localizations.dart';
 import 'package:hodiy/features/prayer_times/state/prayer_controller.dart';
+import 'package:hodiy/features/prayer_times/ui/home_screen.dart';
 import 'package:hodiy/features/settings/state/settings_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,7 @@ class HodiyApp extends StatelessWidget {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.teal),
-        home: const Scaffold(body: Center(child: Text('Hodiy'))),
+        home: const HomeScreen(),
       ),
     );
   }
