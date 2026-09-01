@@ -23,35 +23,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: pubspec.yaml
-          cache: true
-
-      - name: Resolve dependencies
-        run: flutter pub get
-
       - name: Configure release signing
         if: ${{ secrets.KEYSTORE_BASE64 != '' && secrets.KEYSTORE_PASSWORD != '' && secrets.KEY_ALIAS != '' && secrets.KEY_PASSWORD != '' }}
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        shell: bash
-        run: |
-          umask 077
-          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
-          {
-            printf 'storePassword=%s\n' "$KEYSTORE_PASSWORD"
-            printf 'keyPassword=%s\n' "$KEY_PASSWORD"
-            printf 'keyAlias=%s\n' "$KEY_ALIAS"
-            printf 'storeFile=upload-keystore.jks\n'
-          } > android/key.properties
+        run: echo "signing"
