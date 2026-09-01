@@ -35,7 +35,7 @@ void main() {
     await tester.enterText(find.byType(TextField), 'Almaty');
     await tester.pump();
 
-    expect(find.text('Almaty'), findsOneWidget);
-    expect(find.text('Dushanbe'), findsNothing);
+    expect(find.widgetWithText(ListTile, 'Almaty'), findsOneWidget);
+    expect(find.widgetWithText(ListTile, 'Dushanbe'), findsNothing);
   });
 }
