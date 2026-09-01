@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "Hodiy",
+  "@appTitle": {
+    "description": "The application name shown in the OS app switcher and launcher."
+  }
+}
