@@ -64,7 +64,9 @@ test/
   widget/
 tool/
   method_table.dart
-docs/
-  index.md
-  privacy.md
+```
+
+The landing page and privacy policy live in the separate public repo
+`samedtorlak/hodiy-site` (GitHub Pages does not work on private repos on
+the free plan), not in this repo. Do not recreate a `docs/` folder here.
 ```
