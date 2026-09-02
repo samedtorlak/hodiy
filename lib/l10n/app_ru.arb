@@ -73,5 +73,11 @@
   "tasbihResetButton": "Сбросить",
   "tasbihResetConfirmMessage": "Сбросить счётчик до нуля?",
   "tasbihCustomTargetLabel": "Другое",
-  "tasbihLapCompleteMessage": "Круг завершён"
+  "tasbihLapCompleteMessage": "Круг завершён",
+  "updateAvailableTitle": "Доступно обновление",
+  "updateAvailableMessage": "Версия {version} готова к загрузке.",
+  "updateDownloadButton": "Скачать",
+  "updateLaterButton": "Позже",
+  "updateDownloadingMessage": "Загрузка обновления…",
+  "updateFailedMessage": "Не удалось обновить. Попробуйте ещё раз."
 }

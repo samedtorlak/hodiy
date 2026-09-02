@@ -73,5 +73,18 @@
   "tasbihResetButton": "Reset",
   "tasbihResetConfirmMessage": "Reset the counter to zero?",
   "tasbihCustomTargetLabel": "Custom",
-  "tasbihLapCompleteMessage": "Lap complete"
+  "tasbihLapCompleteMessage": "Lap complete",
+  "updateAvailableTitle": "Update available",
+  "updateAvailableMessage": "Version {version} is ready to download.",
+  "updateDownloadButton": "Download",
+  "updateLaterButton": "Later",
+  "updateDownloadingMessage": "Downloading update…",
+  "updateFailedMessage": "Update failed. Please try again.",
+  "@updateAvailableMessage": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  }
 }

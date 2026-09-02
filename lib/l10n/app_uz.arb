@@ -73,5 +73,11 @@
   "tasbihResetButton": "Qayta boshlash",
   "tasbihResetConfirmMessage": "Sanoqni nolga tushirasizmi?",
   "tasbihCustomTargetLabel": "Ixtiyoriy",
-  "tasbihLapCompleteMessage": "Davra yakunlandi"
+  "tasbihLapCompleteMessage": "Davra yakunlandi",
+  "updateAvailableTitle": "Yangilanish mavjud",
+  "updateAvailableMessage": "{version} versiyasi yuklab olishga tayyor.",
+  "updateDownloadButton": "Yuklab olish",
+  "updateLaterButton": "Keyinroq",
+  "updateDownloadingMessage": "Yangilanish yuklab olinmoqda…",
+  "updateFailedMessage": "Yangilanish amalga oshmadi. Qayta urinib ko‘ring."
 }

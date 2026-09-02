@@ -63,5 +63,11 @@
   "tasbihResetButton": "Sıfırla",
   "tasbihResetConfirmMessage": "Sayaç sıfırlansın mı?",
   "tasbihCustomTargetLabel": "Özel",
-  "tasbihLapCompleteMessage": "Tur tamamlandı"
+  "tasbihLapCompleteMessage": "Tur tamamlandı",
+  "updateAvailableTitle": "Güncelleme var",
+  "updateAvailableMessage": "{version} sürümü indirilmeye hazır.",
+  "updateDownloadButton": "İndir",
+  "updateLaterButton": "Sonra",
+  "updateDownloadingMessage": "Güncelleme indiriliyor…",
+  "updateFailedMessage": "Güncelleme başarısız oldu. Lütfen tekrar deneyin."
 }

@@ -10,6 +10,7 @@ Bu projedeki önemli değişiklikler [Keep a Changelog](https://keepachangelog.c
 
 ### Added
 
+- Uygulama içi otomatik güncelleme (yalnız yan yüklenen test sürümleri): açılışta GitHub Releases denetlenir, yeni sürüm indirilip Android yükleyicisine verilir; Play sürümlerinde `UPDATER_ENABLED=false` ile kapatılmalı
 - Çevrimdışı namaz vakti hesaplama motoru
 - Kıble yönü hesaplama ve pusula ekranı
 - Kalıcı sayaç destekli zikirmatik

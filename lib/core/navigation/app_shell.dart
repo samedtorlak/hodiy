@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hodiy/core/ads/banner_slot.dart';
 import 'package:hodiy/core/localization/generated/app_localizations.dart';
@@ -12,6 +13,8 @@ import 'package:hodiy/features/qibla/ui/qibla_screen.dart';
 import 'package:hodiy/features/settings/state/settings_controller.dart';
 import 'package:hodiy/features/settings/ui/settings_screen.dart';
 import 'package:hodiy/features/tasbih/ui/tasbih_screen.dart';
+import 'package:hodiy/features/updater/ui/update_prompt.dart';
+import 'package:hodiy/features/updater/update_service.dart';
 import 'package:provider/provider.dart';
 
 class AppShell extends StatefulWidget {
@@ -32,6 +35,14 @@ class _AppShellState extends State<AppShell> {
     _settings = context.read<SettingsController>();
     _settings.addListener(_onSettingsChanged);
     unawaited(_initializeNotifications());
+    // Release-only: never contact GitHub from debug runs or widget tests.
+    if (kReleaseMode && updaterEnabled) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          unawaited(maybePromptForUpdate(context, UpdateService()));
+        }
+      });
+    }
   }
 
   Future<void> _initializeNotifications() async {

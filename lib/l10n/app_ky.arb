@@ -73,5 +73,11 @@
   "tasbihResetButton": "Баштапкы абалга келтирүү",
   "tasbihResetConfirmMessage": "Эсептегичти нөлгө түшүрөсүзбү?",
   "tasbihCustomTargetLabel": "Башка",
-  "tasbihLapCompleteMessage": "Айлампа аяктады"
+  "tasbihLapCompleteMessage": "Айлампа аяктады",
+  "updateAvailableTitle": "Жаңыртуу жеткиликтүү",
+  "updateAvailableMessage": "{version} версиясы жүктөп алууга даяр.",
+  "updateDownloadButton": "Жүктөп алуу",
+  "updateLaterButton": "Кийинчерээк",
+  "updateDownloadingMessage": "Жаңыртуу жүктөлүүдө…",
+  "updateFailedMessage": "Жаңыртуу ишке ашкан жок. Кайра аракет кылыңыз."
 }

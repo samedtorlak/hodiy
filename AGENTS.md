@@ -22,6 +22,8 @@
 - Location is processed only on-device and requested once with `ACCESS_COARSE_LOCATION`. Never add background location permission.
 - Advertising through `google_mobile_ads` must be behind the `ADS_ENABLED` Dart define. Real AdMob IDs do not exist yet; use test IDs when IDs are not supplied through GitHub Secrets.
 - Never write secrets such as keystore passwords or AdMob IDs to repository files or commits. Store them only in GitHub Secrets.
+- The repository is PUBLIC (made public 2026-09-03 so the in-app updater can read the releases API anonymously). Never commit anything that must stay private.
+- The in-app updater (`lib/features/updater/`) self-updates from GitHub Releases and is for sideloaded test builds ONLY. Google Play forbids apps that install APKs: before any Play submission, build with `--dart-define=UPDATER_ENABLED=false` AND remove the `REQUEST_INSTALL_PACKAGES` permission from the manifest.
 
 ## Language and localization
 

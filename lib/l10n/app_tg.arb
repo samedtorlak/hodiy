@@ -73,5 +73,11 @@
   "tasbihResetButton": "Аз нав гузоштан",
   "tasbihResetConfirmMessage": "Ҳисобкунакро ба сифр гузорем?",
   "tasbihCustomTargetLabel": "Дигар",
-  "tasbihLapCompleteMessage": "Давр анҷом ёфт"
+  "tasbihLapCompleteMessage": "Давр анҷом ёфт",
+  "updateAvailableTitle": "Навсозӣ дастрас аст",
+  "updateAvailableMessage": "Версияи {version} барои боргирӣ омода аст.",
+  "updateDownloadButton": "Боргирӣ",
+  "updateLaterButton": "Баъдтар",
+  "updateDownloadingMessage": "Навсозӣ боргирӣ мешавад…",
+  "updateFailedMessage": "Навсозӣ иҷро нашуд. Лутфан аз нав кӯшиш кунед."
 }

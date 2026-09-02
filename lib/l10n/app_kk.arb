@@ -73,5 +73,11 @@
   "tasbihResetButton": "Қалпына келтіру",
   "tasbihResetConfirmMessage": "Есептегішті нөлге түсіру керек пе?",
   "tasbihCustomTargetLabel": "Өзгеше",
-  "tasbihLapCompleteMessage": "Айналым аяқталды"
+  "tasbihLapCompleteMessage": "Айналым аяқталды",
+  "updateAvailableTitle": "Жаңарту қолжетімді",
+  "updateAvailableMessage": "{version} нұсқасы жүктеп алуға дайын.",
+  "updateDownloadButton": "Жүктеп алу",
+  "updateLaterButton": "Кейінірек",
+  "updateDownloadingMessage": "Жаңарту жүктелуде…",
+  "updateFailedMessage": "Жаңарту сәтсіз аяқталды. Қайталап көріңіз."
 }
