@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hodiy/core/localization/generated/app_localizations.dart';
 import 'package:hodiy/core/location/cities.dart';
+import 'package:hodiy/core/location/country_locale.dart';
 import 'package:hodiy/core/location/location_service.dart';
 import 'package:hodiy/core/location/nearest_city.dart';
 import 'package:hodiy/features/settings/state/settings_controller.dart';
@@ -31,12 +32,21 @@ class _CityPickerScreenState extends State<CityPickerScreen> {
       switch (result) {
         case LocationGranted(:final lat, :final lon):
           final city = nearestCity(lat, lon, centralAsianCities);
-          await context.read<SettingsController>().setLocation(
+          final settings = context.read<SettingsController>();
+          await settings.setLocation(
             lat: lat,
             lon: lon,
             source: 'gps',
             cityCode: city.code,
           );
+          if (!settings.localeChosen) {
+            final autoLocale = localeForCountry(
+              countryCodeForPosition(lat, lon),
+            );
+            if (autoLocale != null) {
+              await settings.setLocale(autoLocale);
+            }
+          }
           if (mounted) {
             Navigator.of(context).pop();
           }
@@ -100,12 +110,19 @@ class _CityPickerScreenState extends State<CityPickerScreen> {
   }
 
   Future<void> _chooseCity(City city) async {
-    await context.read<SettingsController>().setLocation(
+    final settings = context.read<SettingsController>();
+    await settings.setLocation(
       lat: city.lat,
       lon: city.lon,
       source: 'manual',
       cityCode: city.code,
     );
+    if (!settings.localeChosen) {
+      final autoLocale = localeForCountry(city.countryCode);
+      if (autoLocale != null) {
+        await settings.setLocale(autoLocale);
+      }
+    }
     if (mounted) {
       Navigator.of(context).pop();
     }
@@ -113,7 +130,7 @@ class _CityPickerScreenState extends State<CityPickerScreen> {
 
   String _cityName(City city) {
     return switch (Localizations.localeOf(context).languageCode) {
-      'en' => city.nameEn,
+      'en' || 'tr' => city.nameEn,
       'ru' => city.nameRu,
       _ => city.nameLocal,
     };

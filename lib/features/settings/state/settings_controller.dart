@@ -17,6 +17,7 @@ class SettingsController extends ChangeNotifier {
   ];
 
   Locale _locale = const Locale('en');
+  bool _localeChosen = false;
   String? _cityCode;
   double? _lat;
   double? _lon;
@@ -33,6 +34,7 @@ class SettingsController extends ChangeNotifier {
   String _soundType = 'default';
 
   Locale get locale => _locale;
+  bool get localeChosen => _localeChosen;
   String? get cityCode => _cityCode;
   double? get lat => _lat;
   double? get lon => _lon;
@@ -48,7 +50,9 @@ class SettingsController extends ChangeNotifier {
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
-    _locale = Locale(prefs.getString(PrefsKeys.localeCode) ?? 'en');
+    final savedLocaleCode = prefs.getString(PrefsKeys.localeCode);
+    _localeChosen = savedLocaleCode != null;
+    _locale = Locale(savedLocaleCode ?? 'en');
     _cityCode = prefs.getString(PrefsKeys.cityCode);
     _lat = prefs.getDouble(PrefsKeys.lat);
     _lon = prefs.getDouble(PrefsKeys.lon);
@@ -80,6 +84,7 @@ class SettingsController extends ChangeNotifier {
 
   Future<void> setLocale(Locale locale) {
     _locale = locale;
+    _localeChosen = true;
     notifyListeners();
     return _save((prefs) async {
       await prefs.setString(PrefsKeys.localeCode, locale.languageCode);

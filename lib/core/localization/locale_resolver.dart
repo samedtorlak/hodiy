@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-const _supportedLanguageCodes = {'en', 'ru', 'uz', 'kk', 'ky', 'tg'};
+const _supportedLanguageCodes = {'en', 'tr', 'ru', 'uz', 'kk', 'ky', 'tg'};
 
 Locale resolveAppLocale(Locale? deviceLocale, List<Locale> supportedLocales) {
   final languageCode = deviceLocale?.languageCode;

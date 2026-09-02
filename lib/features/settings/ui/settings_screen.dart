@@ -18,6 +18,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   static const _supportedLocales = [
     Locale('en'),
+    Locale('tr'),
     Locale('ru'),
     Locale('uz'),
     Locale('kk'),
@@ -76,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String _cityName(BuildContext context, City city) {
     return switch (Localizations.localeOf(context).languageCode) {
-      'en' => city.nameEn,
+      'en' || 'tr' => city.nameEn,
       'ru' => city.nameRu,
       _ => city.nameLocal,
     };
@@ -98,6 +99,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _languageName(Locale locale) {
     return switch (locale.languageCode) {
       'en' => 'English',
+      'tr' => 'Türkçe',
       'ru' => 'Русский',
       'uz' => 'Oʻzbekcha',
       'kk' => 'Қазақша',
