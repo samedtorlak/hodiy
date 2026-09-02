@@ -10,5 +10,6 @@ Bu projedeki önemli değişiklikler [Keep a Changelog](https://keepachangelog.c
 - Kıble yönü hesaplama ve pusula ekranı
 - Kalıcı sayaç destekli zikirmatik
 - Namaz vakti bildirimleri
-- İngilizce, Özbekçe, Kazakça, Kırgızca, Tacikçe ve Rusça olmak üzere altı dil desteği
+- İngilizce, Türkçe, Özbekçe, Kazakça, Kırgızca, Tacikçe ve Rusça olmak üzere yedi dil desteği
+- İlk konum tespitinde (GPS veya elle şehir seçimi) ülkeye göre otomatik varsayılan dil; kullanıcı ayarlardan değiştirmedikçe dil bir daha kendiliğinden değişmez
 - `ADS_ENABLED` ile kontrol edilen ve Google test kimliklerine düşen reklam altyapısı
