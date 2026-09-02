@@ -51,3 +51,4 @@ key.properties
 *.jks
 /lib/core/localization/generated/
 /untranslated.txt
+/hodiy-site/
