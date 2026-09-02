@@ -4,6 +4,10 @@ Bu projedeki önemli değişiklikler [Keep a Changelog](https://keepachangelog.c
 
 ## [Unreleased]
 
+### Fixed
+
+- CI'da `ADMOB_APP_ID` secret'ı yokken manifest'e boş AdMob kimliği gömülmesi — uygulama açılışta anında çöküyordu; boş değer artık Google test kimliğine düşüyor
+
 ### Added
 
 - Çevrimdışı namaz vakti hesaplama motoru

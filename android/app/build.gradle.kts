@@ -42,8 +42,13 @@ android {
         minSdk = 24
         targetSdk = 36
         multiDexEnabled = true
+        // A blank value must also fall back to the Google test ID: CI maps the
+        // (possibly nonexistent) ADMOB_APP_ID secret through an env var, which
+        // arrives as "" rather than null, and an empty APPLICATION_ID makes the
+        // Mobile Ads SDK crash the app at process start.
         manifestPlaceholders["admobAppId"] =
-            (project.findProperty("admobAppId") as String?) ?: "ca-app-pub-3940256099942544~3347511713"
+            (project.findProperty("admobAppId") as String?)?.takeIf { it.isNotBlank() }
+                ?: "ca-app-pub-3940256099942544~3347511713"
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
         // is added automatically by Flutter. (https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions)
         // You can force using the value of versionCode by specifying the `-P force-version-code-ignoring-abi=true`
